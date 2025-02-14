@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"url-shortener/internal/handler"
 	"url-shortener/migrations"
 
 	"github.com/joho/godotenv"
@@ -95,8 +96,8 @@ func main() {
 	// Запуск HTTP сервера
 	go func() {
 		mux := http.NewServeMux()
-		mux.HandleFunc("/create", createHandler(svc))
-		mux.HandleFunc("/get/", getHandler(svc))
+		mux.HandleFunc("/create", handler.CreateHandler(svc))
+		mux.HandleFunc("/get/", handler.GetHandler(svc))
 
 		server := &http.Server{
 			Addr:    fmt.Sprintf(":%s", cfg.HTTPPort),
@@ -122,54 +123,4 @@ func main() {
 	<-sigChan
 	log.Println("Shutting down server...")
 	cancel() // Отменяем контекст для graceful shutdown
-}
-
-func createHandler(svc *service.Service) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodPost {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-
-		originalURL := r.FormValue("url")
-		if originalURL == "" {
-			http.Error(w, "Missing URL parameter", http.StatusBadRequest)
-			return
-		}
-
-		resp, err := svc.CreateLink(r.Context(), &api.CreateLinkRequest{
-			OriginalUrl: originalURL,
-		})
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		fmt.Fprint(w, resp.ShortUrl)
-	}
-}
-
-func getHandler(svc *service.Service) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-			return
-		}
-
-		shortURL := r.URL.Path[len("/get/"):]
-		if len(shortURL) != 10 {
-			http.Error(w, "Invalid short URL", http.StatusBadRequest)
-			return
-		}
-
-		resp, err := svc.GetLink(r.Context(), &api.GetLinkRequest{
-			ShortUrl: shortURL,
-		})
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusNotFound)
-			return
-		}
-
-		http.Redirect(w, r, resp.OriginalUrl, http.StatusFound)
-	}
 }
