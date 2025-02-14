@@ -14,6 +14,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"url-shortener/api"
 	"url-shortener/internal/config"
 	"url-shortener/internal/service"
@@ -78,6 +79,7 @@ func main() {
 
 		s := grpc.NewServer()
 		api.RegisterLinkServiceServer(s, svc)
+		reflection.Register(s)
 		log.Printf("gRPC server listening on :%s", cfg.GRPCPort)
 
 		// Используем контекст для graceful shutdown
