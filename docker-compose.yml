@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: url_shortener_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: links
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - url_shortener_network
+
+  app:
+    build:
+      context: ../../url-shortener
+      dockerfile: ../../url-shortener/Dockerfile
+    container_name: url_shortener_app
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    environment:
+      - STORAGE_TYPE=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=links
+    depends_on:
+      - postgres
+    networks:
+      - url_shortener_network
+
+volumes:
+  postgres_data:
+
+networks:
+  url_shortener_network:
+    driver: bridge
