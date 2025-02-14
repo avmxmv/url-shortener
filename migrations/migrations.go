@@ -6,12 +6,12 @@ import (
 )
 
 func RunMigrations(dsn string) error {
-	cmd := exec.Command("goose", "postgres", dsn, "up")
+	cmd := exec.Command("goose", "-dir", "migrations", "postgres", dsn, "up")
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		log.Printf("Migration output: %s", output)
+		log.Printf("Migration failed: %s\n", output)
 		return err
 	}
-	log.Printf("Migrations applied successfully")
+	log.Println("Migrations applied successfully")
 	return nil
 }

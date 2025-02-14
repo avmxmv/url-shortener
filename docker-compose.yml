@@ -24,12 +24,12 @@ services:
       - "8080:8080"
       - "50051:50051"
     environment:
-      - STORAGE_TYPE=postgres
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=links
+      - STORAGE_TYPE=${STORAGE_TYPE}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     depends_on:
       - postgres
     networks:

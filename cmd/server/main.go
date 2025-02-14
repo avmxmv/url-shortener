@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"url-shortener/migrations"
 
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -18,7 +19,6 @@ import (
 	"url-shortener/internal/config"
 	"url-shortener/internal/service"
 	"url-shortener/internal/storage"
-	"url-shortener/migrations"
 )
 
 func main() {
