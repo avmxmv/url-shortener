@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"database/sql"
 	"flag"
 	"fmt"
 	"log"
@@ -19,6 +18,7 @@ import (
 	"url-shortener/internal/config"
 	"url-shortener/internal/service"
 	"url-shortener/internal/storage"
+	"url-shortener/migrations"
 )
 
 func main() {
@@ -54,8 +54,7 @@ func main() {
 		}
 		log.Println("Connected to PostgreSQL")
 
-		// Применение миграций
-		if err := runMigrations(dsn); err != nil {
+		if err := migrations.RunMigrations(dsn); err != nil {
 			log.Fatalf("Migrations failed: %v", err)
 		}
 
@@ -123,22 +122,6 @@ func main() {
 	<-sigChan
 	log.Println("Shutting down server...")
 	cancel() // Отменяем контекст для graceful shutdown
-}
-
-func runMigrations(dsn string) error {
-	db, err := sql.Open("postgres", dsn)
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS links (
-		id SERIAL PRIMARY KEY,
-		original_url TEXT NOT NULL UNIQUE,
-		short_url TEXT NOT NULL UNIQUE,
-		created_at TIMESTAMP DEFAULT NOW()
-	)`)
-	return err
 }
 
 func createHandler(svc *service.Service) http.HandlerFunc {
