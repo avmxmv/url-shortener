@@ -17,8 +17,8 @@ services:
 
   app:
     build:
-      context: ../../url-shortener
-      dockerfile: ../../url-shortener/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     container_name: url_shortener_app
     ports:
       - "8080:8080"

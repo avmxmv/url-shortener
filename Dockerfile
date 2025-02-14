@@ -5,7 +5,7 @@ RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 WORKDIR /app
-COPY ../../url-shortener .
+COPY . .
 
 RUN go mod download
 RUN go install github.com/pressly/goose/v3/cmd/goose@latest
