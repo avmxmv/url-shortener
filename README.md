@@ -42,15 +42,23 @@
 
 Запуск сервера:
 
-через docker - ```docker-compose up -d --build```
+Через docker - ```make docker-compose-up```
+
+Остановка - ```make docker-compose-down```
 
 Локально:
 
-inmem - ```go run ./cmd/server --storage=inmem```
+Сборка проекта - ```make build```
 
-postgres - ```go run ./cmd/server --storage=postgres```
+inmem - ```make run```
 
-Примеры запросов
+postgres - ```make run-postgres```
+
+Генерация gRPC кода - ```make generate```
+
+Применение миграций - ```migrate-up```
+
+Примеры запросов:
 
 grpc:
 
@@ -129,5 +137,5 @@ not found
 Запуск тестов:
 
 ```
-go test ./...
+make tests
 ```
