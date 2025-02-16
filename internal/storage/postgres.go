@@ -2,6 +2,7 @@ package storage
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/lib/pq"
 )
 
@@ -26,6 +27,20 @@ func (s *PostgresStorage) CreateLink(originalURL string) (string, error) {
 		RETURNING short_url`,
 		originalURL, GenerateShortURL(),
 	).Scan(&shortURL)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			err = s.db.QueryRow(
+				`SELECT short_url FROM links WHERE original_url = $1`,
+				originalURL,
+			).Scan(&shortURL)
+			if err != nil {
+				return "", fmt.Errorf("failed to get existing short URL: %w", err)
+			}
+			return shortURL, nil
+		}
+		return "", fmt.Errorf("failed to create link: %w", err)
+	}
 
 	return shortURL, err
 }
