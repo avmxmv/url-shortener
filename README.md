@@ -27,40 +27,70 @@
 │       └── service_test.go
 ├── migrations
 │   ├── 20250214102327_create_links_table.sql
+│   ├── 20250216005319_add_index_to_links.sql
 │   └── migrations.go
-├── Dockerfile
-├── docker-compose.yml
 ├── .env
+├── docker-compose.yml
+├── Dockerfile
 ├── go.mod
 ├── go.sum
+├── Makefile
 └── README.md
 ```
 
-Клонируйте проект
+# Клонируйте проект
 
-```git clone https://github.com/avmxmv/url-shortener.git```
+```
+git clone https://github.com/avmxmv/url-shortener.git
+```
 
-Запуск сервера:
+# Запуск сервера:
 
-Через docker - ```make docker-compose-up```
+## Через docker: 
+```
+make docker-compose-up
+```
 
-Остановка - ```make docker-compose-down```
+## Остановка: 
+```
+make docker-compose-down
+```
 
-Локально:
+# Локально:
 
-Сборка проекта - ```make build```
+## Сборка проекта:
+```
+make build
+```
 
-inmem - ```make run```
+## inmem: 
+```
+make run
+```
 
-postgres - ```make run-postgres```
+## postgres: 
+```
+make run-postgres
+```
 
-Генерация gRPC кода - ```make generate```
+## Генерация gRPC кода: 
+```
+make generate
+```
 
-Применение миграций - ```migrate-up```
+## Применение миграций:
+```
+migrate-up
+```
 
-Примеры запросов:
+## Запуск тестов:
+```
+make tests
+```
 
-grpc:
+# Примеры запросов:
+
+## gRPC:
 
 CreateLink:
 
@@ -98,7 +128,7 @@ ERROR:
   Message: not found
 ```
 
-HTTP API:
+## HTTP API:
 
 POST:
 
@@ -132,10 +162,4 @@ Invalid short URL
 
 ```
 not found
-```
-
-Запуск тестов:
-
-```
-make tests
 ```
