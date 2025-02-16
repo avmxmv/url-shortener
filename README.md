@@ -33,14 +33,14 @@
 ├── .env
 ├── go.mod
 ├── go.sum
-└── READMe.md
+└── README.md
 ```
 
 Клонируйте проект
 
 ```git clone https://github.com/avmxmv/url-shortener.git```
 
-Запус сервера:
+Запуск сервера:
 
 через docker - ```docker-compose up -d --build```
 
@@ -54,7 +54,7 @@ postgres - ```go run ./cmd/server --storage=postgres```
 
 grpc:
 
-POST:
+CreateLink:
 
 ```
 grpcurl -plaintext -d '{"original_url": "https://avmxmv.com"}' localhost:50051 api.LinkService/CreateLink
@@ -68,7 +68,7 @@ grpcurl -plaintext -d '{"original_url": "https://avmxmv.com"}' localhost:50051 a
 }
 ```
 
-GET:
+GetLink :
 
 ```
 grpcurl -plaintext -d '{"short_url": "JHt3oBNWn4"}' localhost:50051 api.LinkService/GetLink
@@ -126,7 +126,7 @@ Invalid short URL
 not found
 ```
 
-Запус тестов:
+Запуск тестов:
 
 ```
 go test ./...

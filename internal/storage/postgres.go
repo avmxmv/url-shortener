@@ -22,7 +22,7 @@ func (s *PostgresStorage) CreateLink(originalURL string) (string, error) {
 	err := s.db.QueryRow(
 		`INSERT INTO links (original_url, short_url) 
 		VALUES ($1, $2) 
-		ON CONFLICT (original_url) DO UPDATE SET original_url=EXCLUDED.original_url 
+		ON CONFLICT (original_url)
 		RETURNING short_url`,
 		originalURL, GenerateShortURL(),
 	).Scan(&shortURL)

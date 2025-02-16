@@ -46,7 +46,7 @@ func TestCreateLink(t *testing.T) {
 	mock.ExpectQuery(regexp.QuoteMeta(
 		`INSERT INTO links (original_url, short_url) 
 		VALUES ($1, $2) 
-		ON CONFLICT (original_url) DO UPDATE SET original_url=EXCLUDED.original_url 
+		ON CONFLICT (original_url) 
 		RETURNING short_url`,
 	)).WithArgs(originalURL, sqlmock.AnyArg()).WillReturnRows(sqlmock.NewRows([]string{"short_url"}).AddRow(shortURL))
 

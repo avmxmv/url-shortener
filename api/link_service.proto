@@ -3,7 +3,9 @@ package api;
 option go_package = "./api";
 
 service LinkService {
+  // создание короткой ссылки
   rpc CreateLink(CreateLinkRequest) returns (CreateLinkResponse);
+  // получение оригинальной ссылки
   rpc GetLink(GetLinkRequest) returns (GetLinkResponse);
 }
 
