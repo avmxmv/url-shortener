@@ -27,7 +27,9 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LinkServiceClient interface {
+	// создание короткой ссылки
 	CreateLink(ctx context.Context, in *CreateLinkRequest, opts ...grpc.CallOption) (*CreateLinkResponse, error)
+	// получение оригинальной ссылки
 	GetLink(ctx context.Context, in *GetLinkRequest, opts ...grpc.CallOption) (*GetLinkResponse, error)
 }
 
@@ -63,7 +65,9 @@ func (c *linkServiceClient) GetLink(ctx context.Context, in *GetLinkRequest, opt
 // All implementations must embed UnimplementedLinkServiceServer
 // for forward compatibility.
 type LinkServiceServer interface {
+	// создание короткой ссылки
 	CreateLink(context.Context, *CreateLinkRequest) (*CreateLinkResponse, error)
+	// получение оригинальной ссылки
 	GetLink(context.Context, *GetLinkRequest) (*GetLinkResponse, error)
 	mustEmbedUnimplementedLinkServiceServer()
 }
